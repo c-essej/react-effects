@@ -55,7 +55,7 @@ function Deck() {
       <div>
         <button onClick={fetchCard}>Draw a card</button>
         <div className="Card">
-        {cards.map(card => <Card cards={card} key={card.code} />)}
+        {cards.map(card => <Card card={card} />)}
       </div>
       </div>
         :
