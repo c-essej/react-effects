@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import Card from './Card';
 
 const BASE_URL = 'https://deckofcardsapi.com/api/deck';
 
@@ -13,6 +14,10 @@ function Deck() {
   });
 
   const [cards, setCards] = useState([]);
+
+  console.log("STATE => DECK IS", deck);
+  console.log("STATE => CARDS ARE", cards);
+
 
   useEffect(function fetchDeckOnMount() {
     async function fetchDeck() {
@@ -31,7 +36,7 @@ function Deck() {
   async function fetchCard() {
     const response = await axios.get(`${BASE_URL}/${deck.deckId}/draw/?count=1`);
     const card = response.data.cards[0];
-    setCards(card);
+    setCards(cards => [...cards, card]);
     setDeck({
       deckId: deck.deckId,
       remaining: response.data.remaining,
@@ -46,10 +51,17 @@ function Deck() {
 
   return (
     <div className="Deck">
-      <button onClicke={fetchCard}>Draw a card</button>
+      {cards.length !== 0 ?
       <div>
+        <button onClick={fetchCard}>Draw a card</button>
+        <div className="Card">
         {cards.map(card => <Card cards={card} key={card.code} />)}
       </div>
+      </div>
+        :
+        <button onClick={fetchCard}> Start drawing </button>
+      }
+
     </div>
 
   );
